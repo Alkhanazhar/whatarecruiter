@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,7 +7,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Filter } from "lucide-react";
 import { useState } from "react";
 
 const JobListTable = ({ jobs }) => {

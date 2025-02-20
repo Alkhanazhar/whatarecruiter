@@ -1,20 +1,13 @@
-import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { DayPicker } from "react-day-picker"
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { DayPicker } from "react-day-picker";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
-
-function Calendar({
-  className,
-  classNames,
-  showOutsideDays = true,
-  ...props
-}) {
+function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
   return (
-    (<DayPicker
+    <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn("p-3", className)}
+      className={cn("", className)}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
@@ -23,12 +16,12 @@ function Calendar({
         nav: "space-x-1 flex items-center",
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+          "h-8 w-8 bg-transparent p-0 opacity-50 hover:opacity-100"
         ),
         nav_button_previous: "absolute left-1",
         nav_button_next: "absolute right-1",
         table: "w-full border-collapse space-y-1",
-        head_row: "flex",
+        head_row: "flex w-full  justify-between",
         head_cell:
           "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
         row: "flex w-full mt-2",
@@ -40,7 +33,7 @@ function Calendar({
         ),
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-8 w-8 p-0 font-normal aria-selected:opacity-100"
+          "md:h-10 md:w-10 sm:w-12 sm:h-12 w-6 h-6   p-0 border font-normal aria-selected:opacity-100 mx-2"
         ),
         day_range_start: "day-range-start",
         day_range_end: "day-range-end",
@@ -63,9 +56,10 @@ function Calendar({
           <ChevronRight className={cn("h-4 w-4", className)} {...props} />
         ),
       }}
-      {...props} />)
+      {...props}
+    />
   );
 }
-Calendar.displayName = "Calendar"
+Calendar.displayName = "Calendar";
 
-export { Calendar }
+export { Calendar };

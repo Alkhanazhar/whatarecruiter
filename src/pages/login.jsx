@@ -95,12 +95,10 @@ const Login = () => {
           Watta Recruiter
         </Link>
       </div>
-      <div className="z-[100] ">
+      <div className="z-[100] flex w-full ">
         <div>
-          <div className="mb-4 font-medium d-flex justify-content-center align-items-center login-welcome-text z-[1000] text-2xl">
-            Welcome Back
-          </div>
-          <Card className="z-[10000] md:w-[350px] ">
+          <div className="flex-1 z-[1000] text-2xl">Welcome Back</div>
+          <Card className="z-[10000] md:w-[350px] flex-1">
             <CardHeader>
               <CardTitle>Login</CardTitle>
             </CardHeader>

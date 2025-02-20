@@ -1,12 +1,12 @@
-import { Button, Col, Row } from "react-bootstrap";
-import { ReusableInput } from "../candidates/AddCandidates";
 import { useState } from "react";
-import {  MoveLeft } from "lucide-react";
-import Title from "../dashboard/Title";
+import { MoveLeft } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { TbUserBolt } from "react-icons/tb";
+import TopBar from "../dashboard-header";
+import { Button } from "@/components/ui/button";
+import { ReusableInput } from "@/components/ui/reusable-input";
 
 const CreateCandidates = () => {
   const [formData, setFormData] = useState({
@@ -49,15 +49,15 @@ const CreateCandidates = () => {
       style={{ zIndex: 100 }}
     >
       <form onSubmit={handleSubmit}>
-        <Title title={"Create Candidates"} icon={TbUserBolt} />
+        <TopBar title={"Create Candidates"} icon={TbUserBolt} />
 
         <div
           className=" d-flex flex-grow-1 px-5 flex-column"
           style={{ height: "100%" }}
         >
-          <Row>
-            <Col xs={12} className="mt-3">
-              <Row>
+          <div>
+            <div className="mt-3">
+              <div>
                 <div>
                   <button
                     className="btn btn-primary btn-theme mx-2 btn-sm "
@@ -66,7 +66,7 @@ const CreateCandidates = () => {
                     <MoveLeft />
                   </button>
                 </div>
-                <Col>
+                <div>
                   <label className="mx-2 my-1 fs-5 fw-semibold">Name</label>
                   <ReusableInput
                     label="Designation"
@@ -120,13 +120,13 @@ const CreateCandidates = () => {
                     value={formData.password}
                     required
                   />
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="p-3  d-flex align-items-center justify-content-end gap-5">
-          <Button type="submit" variant="warning" className="fw-semibold">
+          <Button type="submit" variant="warning" className="font-semibold">
             {" "}
             Add Candidates
           </Button>

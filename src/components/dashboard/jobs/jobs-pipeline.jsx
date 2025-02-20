@@ -62,9 +62,9 @@ const JobsPipeline = () => {
   return (
     <div className="py-2">
       <div className="pipeline-container">
-        <h3 className="p-2 px-3 border-bottom">Jobs Pipeline</h3>
-        <MDBTable responsive className="pipeline-table p-4 w-full">
-          <MDBTableHead className="p-2 bg-white ">
+        <h3 className="py-2 ">Jobs Pipeline</h3>
+        <MDBTable responsive className="pipeline-table p-4 w-full border">
+          <MDBTableHead className="p-2 bg-white !font-medium ">
             <tr>
               <th className="p-3">Jobs</th>
               <th className="p-3">New</th>
@@ -80,7 +80,7 @@ const JobsPipeline = () => {
                 <td className=" p-2 px-3 bullet-div">{job.job}</td>
                 <td className=" p-1">
                   <div
-                    className=" px-3 p-2 m-1 bullet-div first  "
+                    className=" px-3 p-2 m-1 bullet-div bg-primary-300  text-white"
                     style={{ fontSize: ".9rem" }}
                   >
                     {job.new || "-"}
@@ -88,7 +88,7 @@ const JobsPipeline = () => {
                 </td>
                 <td className=" p-1">
                   <div
-                    className=" px-3 p-2 m-1 bullet-div second "
+                    className=" px-3 p-2 m-1 bullet-div  bg-primary-400  text-white"
                     style={{ fontSize: ".9rem" }}
                   >
                     {job.inReview || "-"}
@@ -96,7 +96,7 @@ const JobsPipeline = () => {
                 </td>
                 <td className=" p-1">
                   <div
-                    className=" px-3 p-2 m-1 bullet-div third  "
+                    className=" px-3 p-2 m-1 bullet-div  bg-primary-500 text-white"
                     style={{ fontSize: ".9rem" }}
                   >
                     {job.interview || " -"}
@@ -104,7 +104,7 @@ const JobsPipeline = () => {
                 </td>
                 <td className="  p-1">
                   <div
-                    className=" px-3 p-2 m-1 bullet-div  forth"
+                    className=" px-3 p-2 m-1 bullet-div   bg-primary-900 text-white"
                     style={{ fontSize: ".9rem" }}
                   >
                     {job.offered || "- "}
@@ -112,7 +112,7 @@ const JobsPipeline = () => {
                 </td>
                 <td className=" p-1">
                   <div
-                    className=" px-3 p-2 m-1 bullet-div fifth "
+                    className=" px-3 p-2 m-1 bullet-div text-white bg-primary-950 "
                     style={{ fontSize: ".9rem" }}
                   >
                     {job.hired || " -"}

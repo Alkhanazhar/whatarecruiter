@@ -1,123 +1,52 @@
-import { FileUser, SquareKanban } from "lucide-react";
-import Title from "../dashboard/Title";
-import DashboardInput from "../dashboard/DashboardInput";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { toast } from "@/hooks/use-toast";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { showToast } from "../global/showToast";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Candidates = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-
-  const applicants = [
-    {
-      id: "00001",
-      name: "Christine Brooks",
-      email: "chris@gmail.com",
-      date: "04 Sep 2019",
-      job: "UI/UX Designer",
-    },
-    {
-      id: "00002",
-      name: "Rosie Pearson",
-      email: "rosie@gmail.com",
-      date: "28 May 2023",
-      job: "Frontend",
-    },
-    {
-      id: "00003",
-      name: "Darrell Caldwell",
-      email: "darr@gmail.com",
-      date: "23 Nov 2019",
-      job: "Backend",
-    },
-    {
-      id: "00004",
-      name: "Gilbert Johnston",
-      email: "gillie@gmail.com",
-      date: "05 Feb 2019",
-      job: "Project Manager",
-    },
-    {
-      id: "00005",
-      name: "Alan Cain",
-      email: "alan@gmail.com",
-      date: "29 Jul 2019",
-      job: "CSA",
-    },
-    {
-      id: "00006",
-      name: "Alfred Murray",
-      email: "alfred@gmail.com",
-      date: "15 Aug 2019",
-      job: "Manager",
-    },
-    {
-      id: "00007",
-      name: "Maggie Sullivan",
-      email: "maggie@gmail.com",
-      date: "21 Dec 2019",
-      job: "SAP Consultant",
-    },
-    {
-      id: "00008",
-      name: "Rosie Todd",
-      email: "rosie.todd@gmail.com",
-      date: "30 Apr 2019",
-      job: "Graphic Designer",
-    },
-    {
-      id: "00009",
-      name: "Dollie Hines",
-      email: "dollie@gmail.com",
-      date: "09 Jan 2019",
-      job: "UI/UX",
-    },
-    // Add more items as needed...
-  ];
-
-  // Pagination logic
-  const lastItemIndex = currentPage * itemsPerPage;
-  const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentItems = applicants.slice(firstItemIndex, lastItemIndex);
-  const totalPages = Math.ceil(applicants.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  // const [managers, setManagers] = useState([]);
-  // const navigate = useNavigate();
-  // const token = localStorage.getItem("token");
-  // const userData = token && jwtDecode(token);
-  // const role = localStorage.getItem("role");
+  const [managers, setManagers] = useState([]);
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const userData = token && jwtDecode(token);
+  const role = localStorage.getItem("role");
 
-  // const fetchApplicants = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `/job-applications/by-parent-id/${userData.claims.id}`
-  //     );
-  //     if (!response.error) {
-  //       setManagers(() => response.data.meta);
-  //     } else if (response.data.error) {
-  //       showToast("error", response.data.message);
-  //     }
-  //   } catch (error) {
-  //     if (error.status === 404) {
-  //       console.log("No Applicants Found");
-  //     } else {
-  //       showToast(
-  //         "error",
-  //         error.response?.data?.message || "An error occurred"
-  //       );
-  //     }
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchApplicants();
-  // }, []);
+  const fetchApplicants = async () => {
+    try {
+      const response = await axios.get(
+        `/job-applications/by-parent-id/${userData.claims.id}`
+      );
+      if (!response.error) {
+        setManagers(() => response.data.meta);
+      } else if (response.data.error) {
+        toast({
+          title: "Error",
+          description: response.data.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      if (error.status === 404) {
+        console.log("No Applicants Found");
+      } else {
+        toast({
+          title: "Error",
+          description: "Error while fetching Applicants",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const totalPages = useEffect(() => {
+    fetchApplicants();
+  }, []);
   return (
     <>
       <div className="container mt-5">
@@ -134,7 +63,7 @@ const Candidates = () => {
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((applicant) => (
+            {managers.map((applicant) => (
               <tr key={applicant.id}>
                 <td>{applicant.id}</td>
                 <td>{applicant.name}</td>

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useGetJobs } from "@/hooks/use-get-jobs";
 import { Filter, Grid, List } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Jobs = () => {
   const { jobs, error, loading } = useGetJobs();
@@ -31,10 +32,10 @@ const Jobs = () => {
       <div className="flex items-center justify-between px-4 bg-gray-100">
         <div className="flex gap-3 align-items-center py-3">
           <div className="fw-medium text-2xl">{jobs?.length} active Jobs</div>{" "}
-          <Button size="icon">
+          <Button variant="ghost" size="icon">
             <Filter />
           </Button>
-          <Button size="icon" onClick={handleSetIsGridView}>
+          <Button size="icon" variant="ghost" onClick={handleSetIsGridView}>
             {isGrid ? (
               <Grid className="scale-125" />
             ) : (
@@ -42,7 +43,9 @@ const Jobs = () => {
             )}
           </Button>
         </div>
-        <Button>Create Jobs</Button>
+        <Button asChild>
+          <Link to={"create"}>Create Jobs</Link>
+        </Button>
       </div>
       <div>{!isGrid && <JobList jobs={jobs} />}</div>
       <div className="mt-3">{isGrid && <JobListTable jobs={jobs} />}</div>

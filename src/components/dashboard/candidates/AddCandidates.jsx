@@ -1,9 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ReusableInput } from "@/components/ui/reusable-input";
 import { Search, X } from "lucide-react";
 import { useState, useRef } from "react";
-import { Button, Col, Row } from "react-bootstrap";
-import { Form, InputGroup, FormControl } from "react-bootstrap";
 
 const AddCandidates = () => {
   const [selectTab, setSelectTab] = useState("Brief");
@@ -45,8 +48,8 @@ const AddCandidates = () => {
     switch (selectTab) {
       case "Brief":
         return (
-          <Row>
-            <Col>
+          <div>
+            <div>
               <ReusableInput
                 label="First Name"
                 name="firstName"
@@ -77,8 +80,8 @@ const AddCandidates = () => {
                 onChange={handleChange}
                 value={formData.email}
               />
-            </Col>
-            <Col className="d-flex align-items-center justify-content-center flex-column">
+            </div>
+            <div className="d-flex align-items-center justify-content-center flex-column">
               <div
                 ref={fileInputRef}
                 className=" mb-4 rounded-circle border border-primary"
@@ -94,34 +97,37 @@ const AddCandidates = () => {
                 }}
                 onClick={() => document.getElementById("profile").click()}
               ></div>
-              <Form.Group className="mb-3">
-                <Form.Label
+              <div className="mb-3">
+                <Label
                   htmlFor="profile"
                   className="cursor-pointer btn btn-primary btn-theme"
                 >
                   Upload Image
-                </Form.Label>
-                <Form.Control
+                </Label>
+                {/* <Form.Control
                   type="file"
                   id="profile"
                   name="profile"
                   onChange={handleChange}
                   className="d-none"
-                />
+                /> */}
+                <Input />
                 {/* {formData.profile && (
                   <div className="mt-2">
                     Selected file: {formData.profile.name}
                   </div>
                 )} */}
-              </Form.Group>
-              <button className="btn btn-primary btn-theme">Cancel image</button>
-            </Col>
-          </Row>
+              </div>
+              <button className="btn btn-primary btn-theme">
+                Cancel image
+              </button>
+            </div>
+          </div>
         );
       case "Experience":
         return (
-          <Row>
-            <Col>
+          <div>
+            <div>
               <ReusableInput
                 label="Designation"
                 name="designation"
@@ -152,8 +158,8 @@ const AddCandidates = () => {
                 onChange={handleChange}
                 value={formData.email}
               />
-            </Col>
-            <Col>
+            </div>
+            <div>
               <ReusableInput
                 label="Notice Period"
                 name="noticePeriod"
@@ -183,8 +189,8 @@ const AddCandidates = () => {
                 onChange={handleChange}
                 value={formData.jobDescription}
               />
-            </Col>
-          </Row>
+            </div>
+          </div>
         );
       case "Education":
         return (
@@ -200,8 +206,8 @@ const AddCandidates = () => {
         );
       case "Additional Information":
         return (
-          <Row>
-            <Col>
+          <div>
+            <div>
               <ReusableInput
                 label="Enter Skills"
                 name="skills"
@@ -232,8 +238,8 @@ const AddCandidates = () => {
                 onChange={handleChange}
                 value={formData.email}
               />
-            </Col>
-            <Col>
+            </div>
+            <div>
               <ReusableInput
                 label="Notice Period"
                 name="noticePeriod"
@@ -263,8 +269,8 @@ const AddCandidates = () => {
                 onChange={handleChange}
                 value={formData.jobDescription}
               />
-            </Col>
-          </Row>
+            </div>
+          </div>
         );
       default:
         return null;
@@ -300,50 +306,15 @@ const AddCandidates = () => {
             )
           )}
         </div>
-        <Row>
-          <Col xs={12} className="mt-5">
-            {renderTabContent()}
-          </Col>
-        </Row>
+        <div>
+          <div className="mt-5">{renderTabContent()}</div>
+        </div>
       </div>
       <div className="p-3 border-top d-flex align-items-center justify-content-end gap-5">
         <span>Cancel</span>
-        <Button variant="warning"> Add Candidates</Button>
+        <Button> Add Candidates</Button>
       </div>
     </div>
-  );
-};
-
-export const ReusableInput = ({
-  label,
-  type = "text",
-  name,
-  placeholder,
-  icon: Icon,
-  onChange,
-  value,
-  className = "",
-  ...props
-}) => {
-  return (
-    <Form.Group className={`mb-2 ${className}`} controlId={`form${name}`}>
-      <InputGroup>
-        <FormControl
-          type={type}
-          name={name}
-          placeholder={placeholder}
-          onChange={onChange}
-          value={value}
-          {...props}
-          className="fs-5"
-        />
-        {Icon && (
-          <InputGroup.Text>
-            <Icon />
-          </InputGroup.Text>
-        )}
-      </InputGroup>
-    </Form.Group>
   );
 };
 

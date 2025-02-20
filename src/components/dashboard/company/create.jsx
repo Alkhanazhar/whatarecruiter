@@ -1,23 +1,20 @@
 import { useState } from "react";
-import { MoveLeft, UsersRound } from "lucide-react";
+import { Hotel, MoveLeft } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import TopBar from "../dashboard-header";
-import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { ReusableInput } from "@/components/ui/reusable-input";
-
-const CreateEmployee = () => {
+import TopBar from "../dashboard-header";
+import { toast } from "@/hooks/use-toast";
+const Create = () => {
   const [formData, setFormData] = useState({
     name: "",
+    companyName: "",
     email: "",
     phoneNumber: "",
     username: "",
     password: "",
   });
-  const token = localStorage.getItem("token");
-  const userData = token && jwtDecode(token);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,33 +28,29 @@ const CreateEmployee = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "/employee/create/" + userData.claims.id,
-        formData
-      );
+      const response = await axios.post("/company/create", formData);
+      console.log(response);
 
-      if (!response.data.error) {
-        console.log(response.data);
-        // showToast("success", response.data.message);
+      if (response.data.error == "false") {
+        console.log(response);
         toast({
-          title: "success",
-          description: `${
-            response.data.message || "Employee Created successfully"
-          }`,
+          title: "Success",
+          description: response?.data?.message,
         });
+
         navigate(-1);
-      } else if (response.data.error) {
+      } else {3
         toast({
-          title: "warn",
-          description: `${response.data.message || "warning"}`,
+          title: "warning",
+          description: response?.data?.message,
           variant: "destructive",
         });
       }
     } catch (error) {
       console.log(error);
       toast({
-        title: "warn",
-        description: `${error.response?.data?.message || "An error occurred"}`,
+        title: "error",
+        description: error.response?.data?.message,
         variant: "destructive",
       });
     }
@@ -69,8 +62,7 @@ const CreateEmployee = () => {
       style={{ zIndex: 100 }}
     >
       <form onSubmit={handleSubmit}>
-        <TopBar title={"Create Employee"} icon={UsersRound} />
-
+        <TopBar title={"Create Company"} icon={Hotel} />
         <div
           className=" d-flex flex-grow-1 px-5 flex-column"
           style={{ height: "100%" }}
@@ -96,10 +88,21 @@ const CreateEmployee = () => {
                     value={formData.name}
                     required
                   />
-
+                  <label className="mx-2 my-1 fs-5 fw-semibold">
+                    Company Name
+                  </label>
+                  <ReusableInput
+                    label="Company Name"
+                    name="companyName"
+                    placeholder="Name of the Company"
+                    onChange={handleChange}
+                    value={formData.companyName}
+                    required
+                  />
                   <label className="mx-2 my-1 fs-5 fw-semibold">
                     Phone Number
                   </label>
+
                   <ReusableInput
                     label="Location"
                     name="phoneNumber"
@@ -122,6 +125,7 @@ const CreateEmployee = () => {
                     required
                   />
                   <label className="mx-2 my-1 fs-5 fw-semibold">Username</label>
+
                   <ReusableInput
                     label="Username"
                     type="text"
@@ -132,6 +136,7 @@ const CreateEmployee = () => {
                     required
                   />
                   <label className="mx-2 my-1 fs-5 fw-semibold">Password</label>
+
                   <ReusableInput
                     label="Password"
                     type="text"
@@ -147,8 +152,14 @@ const CreateEmployee = () => {
           </div>
         </div>
         <div className="p-3  d-flex align-items-center justify-content-end gap-5">
-          <Button type="submit" variant="warning" className="fw-semibold">
-            Create Employee
+          <Button
+            type="submit"
+            variant="warning"
+            className="fw-semibold"
+            onClick={() => console.log(formData)}
+          >
+            {" "}
+            Add Company
           </Button>
         </div>
       </form>
@@ -156,4 +167,4 @@ const CreateEmployee = () => {
   );
 };
 
-export default CreateEmployee;
+export default Create;

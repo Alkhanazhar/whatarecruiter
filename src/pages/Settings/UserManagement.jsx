@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Trash2Icon } from "lucide-react";
-import TopBar from "../dashboard-header";
 import { toast } from "@/hooks/use-toast";
+import TopBar from "@/components/dashboard/dashboard-header";
+import { Button } from "@/components/ui/button";
 
 const token = localStorage.getItem("token");
 const userData = token && jwtDecode(token);
 
-const Employee = () => {
+const UserManagement = () => {
   const [managers, setManagers] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -21,7 +22,8 @@ const Employee = () => {
   const fetchCompanies = async (page = 1, size = 25) => {
     try {
       const response = await axios.get(
-        `/employee/page/parent/${userData.claims?.id}?page=${page}&size=${size}`
+        `/user/page/parent/${userData.claims?.id}?page=${page}&size=${size}`
+        // `/user/page/created-by/${userData.claims?.id}?page=${page}&size=${size}`
       );
 
       if (!response.data.error) {
@@ -31,9 +33,7 @@ const Employee = () => {
         setTotalPages(response.data.meta.totalPages);
       } else {
         toast({
-          title: "warn",
-          description: `${response.data.message}`,
-          variant: "destructive",
+          description: response.data.message,
         });
       }
     } catch (error) {
@@ -41,10 +41,8 @@ const Employee = () => {
         console.log("No Employees Found");
       } else {
         toast({
-          title: "warn",
-          description: `${
-            error.response?.data?.message || "An error occurred"
-          }`,
+          title: "error",
+          description: error.response?.data?.message || "An error occurred",
           variant: "destructive",
         });
       }
@@ -69,10 +67,9 @@ const Employee = () => {
   return (
     <div className="me-md-3">
       <div>
-        <TopBar icon={SquareKanban} title={"Employee"} />
+        <TopBar icon={SquareKanban} title={"User Management"} />
       </div>
-
-      <div className="d-flex gap-4 w-100 align-items-center justify-content-center">
+      <div className="d-flex gap-4 w-100 align-items-center justify-content-center px-10">
         <div className="my-md-4">
           <div className="row">
             <div className="col">
@@ -99,12 +96,7 @@ const Employee = () => {
           </div>
         </div>
         <div className="d-flex align-items-center justify-content-center">
-          <button
-            className="btn btn-primary btn-theme"
-            onClick={() => navigate("create")}
-          >
-            Create Employee
-          </button>
+          <Button onClick={() => navigate("create-user")}>Create User</Button>
         </div>
         <div className="col d-flex">
           <select
@@ -151,25 +143,15 @@ export function JobTable({
         `/employee/${employeeIdToDelete}/parent/${parentId}`
       );
       if (!response.data.error) {
-        // showToast("success", "Employee deleted successfully");
-        toast({
-          title: "success",
-          description: `${
-            response.data.message || "Employee deleted successfully"
-          }`,
-        });
+        toast("success", "Employee deleted successfully");
         fetchCompanies(); // Refresh data after deletion
       } else {
-        toast({
-          title: "warn",
-          description: `${response.data.message || "warning"}`,
-          variant: "destructive",
-        });
+        toast({ title: "warn", description: response.data.message });
       }
     } catch (error) {
       toast({
-        title: "warn",
-        description: `${error.response?.data?.message || "An error occurred"}`,
+        title: "error",
+        description: error.response?.data?.message || "An error occurred",
         variant: "destructive",
       });
     }
@@ -192,12 +174,15 @@ export function JobTable({
               <th scope="col" style={{ width: "25%" }} className="text-center">
                 Email
               </th>
-              <th scope="col" style={{ width: "15%" }} className="text-center">
+              <th scope="col" style={{ width: "25%" }} className="text-center">
+                System Role
+              </th>
+              {/* <th scope="col" style={{ width: "15%" }} className="text-center">
                 Mobile
               </th>
               <th scope="col" style={{ width: "15%" }} className="text-center">
                 Username
-              </th>
+              </th> */}
               <th scope="col" style={{ width: "10%" }} className="text-center">
                 Action
               </th>
@@ -212,8 +197,9 @@ export function JobTable({
                     <td>{index + 1}</td>
                     <td>{job?.name}</td>
                     <td>{job?.email}</td>
-                    <td>{job?.phoneNumber}</td>
-                    <td>{job?.username}</td>
+                    <td>{job?.role}</td>
+                    {/* <td>{job?.phoneNumber}</td> */}
+                    {/* <td>{job?.username}</td> */}
                     <td>
                       <button
                         className="btn"
@@ -342,4 +328,4 @@ export function JobTable({
   );
 }
 
-export default Employee;
+export default UserManagement;

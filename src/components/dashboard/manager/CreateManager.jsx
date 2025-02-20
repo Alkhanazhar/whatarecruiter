@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { MoveLeft, UsersRound } from "lucide-react";
+import { MartiniIcon, MoveLeft } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import TopBar from "../dashboard-header";
 import { toast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
 import { ReusableInput } from "@/components/ui/reusable-input";
+import { Button } from "@/components/ui/button";
 
-const CreateEmployee = () => {
+const CreateManager = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -32,32 +32,28 @@ const CreateEmployee = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "/employee/create/" + userData.claims.id,
+        "/recruiter/create/" + userData.claims.id,
         formData
       );
-
       if (!response.data.error) {
         console.log(response.data);
-        // showToast("success", response.data.message);
         toast({
-          title: "success",
-          description: `${
-            response.data.message || "Employee Created successfully"
-          }`,
+          title: "Success",
+          description: response?.data?.message,
         });
         navigate(-1);
       } else if (response.data.error) {
         toast({
-          title: "warn",
-          description: `${response.data.message || "warning"}`,
+          title: "error",
+          description: response?.data?.message,
           variant: "destructive",
         });
       }
     } catch (error) {
       console.log(error);
       toast({
-        title: "warn",
-        description: `${error.response?.data?.message || "An error occurred"}`,
+        title: "error",
+        description: error.response?.data?.message,
         variant: "destructive",
       });
     }
@@ -69,14 +65,14 @@ const CreateEmployee = () => {
       style={{ zIndex: 100 }}
     >
       <form onSubmit={handleSubmit}>
-        <TopBar title={"Create Employee"} icon={UsersRound} />
+        <TopBar title={"Create Manager"} icon={MartiniIcon} />
 
         <div
           className=" d-flex flex-grow-1 px-5 flex-column"
           style={{ height: "100%" }}
         >
           <div>
-            <div className="mt-3">
+            <div xs={12} className="mt-3">
               <div>
                 <div>
                   <button
@@ -96,7 +92,17 @@ const CreateEmployee = () => {
                     value={formData.name}
                     required
                   />
-
+                  {/* <label className="mx-2 my-1 fs-5 fw-semibold">
+                    Company Name
+                  </label>
+                  <ReusableInput
+                    label="Company Name"
+                    name="companyName"
+                    placeholder="Name of the Company"
+                    onChange={handleChange}
+                    value={formData.companyName}
+                    required
+                  /> */}
                   <label className="mx-2 my-1 fs-5 fw-semibold">
                     Phone Number
                   </label>
@@ -148,7 +154,8 @@ const CreateEmployee = () => {
         </div>
         <div className="p-3  d-flex align-items-center justify-content-end gap-5">
           <Button type="submit" variant="warning" className="fw-semibold">
-            Create Employee
+            {" "}
+            Create Recruiter
           </Button>
         </div>
       </form>
@@ -156,4 +163,4 @@ const CreateEmployee = () => {
   );
 };
 
-export default CreateEmployee;
+export default CreateManager;

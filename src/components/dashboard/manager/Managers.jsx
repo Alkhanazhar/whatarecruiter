@@ -10,18 +10,19 @@ import { toast } from "@/hooks/use-toast";
 const token = localStorage.getItem("token");
 const userData = token && jwtDecode(token);
 
-const Employee = () => {
+const Managers = () => {
   const [managers, setManagers] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(25); // Default page size
   const navigate = useNavigate();
 
   const fetchCompanies = async (page = 1, size = 25) => {
     try {
       const response = await axios.get(
-        `/employee/page/parent/${userData.claims?.id}?page=${page}&size=${size}`
+        // `/employee/page/parent/${userData.claims?.id}?page=${page}&size=${size}`
+        `/recruiter/page/parent/${userData.claims?.id}?page=${page}&size=${size}`
       );
 
       if (!response.data.error) {
@@ -30,21 +31,20 @@ const Employee = () => {
         setCurrentPage(response.data.meta.currentPage);
         setTotalPages(response.data.meta.totalPages);
       } else {
+        // showToast("warn", response.data.message);
         toast({
-          title: "warn",
-          description: `${response.data.message}`,
+          title: "Warning",
+          description: response?.data?.message || "An error occurred",
           variant: "destructive",
         });
       }
     } catch (error) {
       if (error.status === 404) {
-        console.log("No Employees Found");
+        console.log("No Recruiter Found");
       } else {
         toast({
-          title: "warn",
-          description: `${
-            error.response?.data?.message || "An error occurred"
-          }`,
+          title: "Error",
+          description: error.response?.data?.message || "An error occurred",
           variant: "destructive",
         });
       }
@@ -69,10 +69,10 @@ const Employee = () => {
   return (
     <div className="me-md-3">
       <div>
-        <TopBar icon={SquareKanban} title={"Employee"} />
+        <TopBar icon={SquareKanban} title={"Recruiters"} />
       </div>
 
-      <div className="d-flex gap-4 w-100 align-items-center justify-content-center">
+      <div className="d-flex gap-4 w-100 align-items-center">
         <div className="my-md-4">
           <div className="row">
             <div className="col">
@@ -103,7 +103,7 @@ const Employee = () => {
             className="btn btn-primary btn-theme"
             onClick={() => navigate("create")}
           >
-            Create Employee
+            Create Recruiter
           </button>
         </div>
         <div className="col d-flex">
@@ -112,13 +112,14 @@ const Employee = () => {
             value={pageSize}
             onChange={handlePageSizeChange}
           >
-            <option value={5}>25</option>
+            <option value={25}>25</option>
             <option value={50}>50</option>
             <option value={75}>75</option>
             <option value={100}>100</option>
           </select>
         </div>
       </div>
+
       <JobTable
         jobs={managers}
         fetchCompanies={fetchCompanies}
@@ -148,28 +149,28 @@ export function JobTable({
     const parentId = userData.claims.id;
     try {
       const response = await axios.delete(
-        `/employee/${employeeIdToDelete}/parent/${parentId}`
+        `/recruiter/${employeeIdToDelete}/parent/${parentId}`
       );
       if (!response.data.error) {
         // showToast("success", "Employee deleted successfully");
         toast({
-          title: "success",
-          description: `${
-            response.data.message || "Employee deleted successfully"
-          }`,
+          title: "Success",
+          description: "Employee deleted successfully",
         });
         fetchCompanies(); // Refresh data after deletion
       } else {
+        // showToast("warn", response.data.message);
         toast({
           title: "warn",
-          description: `${response.data.message || "warning"}`,
+          description: response?.data?.message,
           variant: "destructive",
         });
       }
     } catch (error) {
+      // showToast("error", error.response?.data?.message || "An error occurred");
       toast({
-        title: "warn",
-        description: `${error.response?.data?.message || "An error occurred"}`,
+        title: "error",
+        description: error.response?.data?.message,
         variant: "destructive",
       });
     }
@@ -228,7 +229,7 @@ export function JobTable({
                 ))
             ) : (
               <tr>
-                <td colSpan={6}>No Employees Found</td>
+                <td colSpan={6}>No Manager Found</td>
               </tr>
             )}
           </tbody>
@@ -342,4 +343,4 @@ export function JobTable({
   );
 }
 
-export default Employee;
+export default Managers;
